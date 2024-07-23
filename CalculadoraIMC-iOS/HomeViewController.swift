@@ -9,19 +9,30 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var heightLabel: UILabel!
+    @IBOutlet weak var weightLabel: UILabel!
+    
+    var height: Int = 160
+    var weight: Float = 70
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "navigateToSecondView") {
-            let viewController = segue.destination as! SecondViewController
-            
-            viewController.name = nameTextField.text!
-        }
+    @IBAction func onHeightChanged(_ sender: UIStepper) {
+        height = Int(sender.value)
+        heightLabel.text = "\(height) cm"
     }
     
+    @IBAction func onWeightChanged(_ sender: UISlider) {
+        weight = sender.value
+        weightLabel.text = "\(weight) kg"
+    }
+    
+    @IBAction func calculate(_ sender: Any) {
+        print("Altura: \(height)")
+        print("Peso: \(weight)")
+    }
 }
 
