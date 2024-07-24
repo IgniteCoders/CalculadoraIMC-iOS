@@ -9,6 +9,8 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
+    static let obesityAdvice = "https://www.teknon.es/es/especialidades/gonzalbez-morgaez-jose/dietetica-obesidad/recomendaciones-pacientes-obesidad"
+    
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var weightLabel: UILabel!
     
@@ -51,6 +53,7 @@ class HomeViewController: UIViewController {
         // Calculo el color y la descripcion
         var descriptionText: String
         var descriptionColor: UIColor
+        var showAlert = false
         
         switch imc {
         case 0..<18.5:
@@ -63,6 +66,7 @@ class HomeViewController: UIViewController {
             descriptionText = "Sobrepeso"
             descriptionColor = UIColor(named: "over_weight")!
         default:
+            showAlert = true
             descriptionText = "Obesidad"
             descriptionColor = UIColor(named: "obesity_weight")!
         }
@@ -72,6 +76,37 @@ class HomeViewController: UIViewController {
         descriptionLabel.text = descriptionText
         resultLabel.textColor = descriptionColor
         descriptionLabel.textColor = descriptionColor
+        
+        if (showAlert) {
+            showObesityAlert()
+        }
+    }
+    
+    func showObesityAlert() {
+        let alert = UIAlertController(
+            title: "Alerta sanitaria",
+            message: "Deberías cuidar tu salud y asistir al médico para estudiar tu caso porque estás en riesgo",
+            preferredStyle: UIAlertController.Style.alert)
+        
+        alert.addAction(UIAlertAction(
+            title: "Me la suda",
+            style: UIAlertAction.Style.destructive,
+            handler: nil)
+        )
+        
+        alert.addAction(UIAlertAction(
+            title: "Ver recomendaciones",
+            style: UIAlertAction.Style.cancel,
+            handler: { action in
+                if let url = URL(string: HomeViewController.obesityAdvice), UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+            })
+        )
+        
+        alert.view.tintColor = UIColor.systemIndigo
+        
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
